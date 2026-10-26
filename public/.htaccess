@@ -1,0 +1,10 @@
+# HTML sempre revalidado: sem isso o navegador guarda a página antiga após um deploy.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Arquivos do Vite têm hash no nome, então podem ficar em cache por um ano.
+  <If "%{REQUEST_URI} =~ m#^/assets/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>
