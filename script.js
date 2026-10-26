@@ -147,3 +147,59 @@ reducedMotion.addEventListener('change', () => {
 });
 setupParticles();
 drawParticles();
+
+// Visualizador: os links continuam abrindo a imagem quando o JavaScript não roda.
+const lightbox = document.querySelector('.lightbox');
+if (lightbox && typeof lightbox.showModal === 'function') {
+  const lightboxImage = lightbox.querySelector('img');
+  const lightboxCount = lightbox.querySelector('.lightbox-count');
+  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+  let group = [];
+  let current = 0;
+  let swipeStart = null;
+
+  function showImage(index, direction = 1) {
+    current = (index + group.length) % group.length;
+    const link = group[current];
+    const apply = () => {
+      lightboxImage.src = link.href;
+      lightboxImage.alt = link.querySelector('img').alt;
+      lightboxCount.textContent = `${String(current + 1).padStart(2, '0')} / ${String(group.length).padStart(2, '0')}`;
+      lightboxCaption.textContent = link.dataset.caption || '';
+      lightboxImage.classList.remove('is-switching');
+    };
+    if (!lightbox.open || reducedMotion.matches) return apply();
+    lightboxImage.style.setProperty('--dir', direction);
+    lightboxImage.classList.add('is-switching');
+    setTimeout(apply, 200);
+  }
+
+  document.querySelectorAll('[data-gallery]').forEach(link => {
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      group = [...document.querySelectorAll(`[data-gallery="${link.dataset.gallery}"]`)];
+      lightbox.classList.toggle('is-single', group.length < 2);
+      showImage(group.indexOf(link));
+      lightbox.showModal();
+      document.body.classList.add('lightbox-open');
+    });
+  });
+
+  lightbox.querySelector('.lightbox-close').addEventListener('click', () => lightbox.close());
+  lightbox.querySelector('.lightbox-prev').addEventListener('click', () => showImage(current - 1, -1));
+  lightbox.querySelector('.lightbox-next').addEventListener('click', () => showImage(current + 1, 1));
+  lightbox.addEventListener('close', () => document.body.classList.remove('lightbox-open'));
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
+  lightbox.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') showImage(current - 1, -1);
+    if (event.key === 'ArrowRight') showImage(current + 1, 1);
+  });
+  lightbox.addEventListener('pointerdown', event => { swipeStart = event.clientX; });
+  lightbox.addEventListener('pointerup', event => {
+    if (swipeStart === null || group.length < 2) return;
+    const distance = event.clientX - swipeStart;
+    swipeStart = null;
+    if (Math.abs(distance) > 50) showImage(current + (distance < 0 ? 1 : -1), distance < 0 ? 1 : -1);
+  });
+}
