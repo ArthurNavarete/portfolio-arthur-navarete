@@ -1,9 +1,0 @@
-# Cabeçalhos de segurança para o site estático (Hostinger/LiteSpeed/Apache honram .htaccess).
-# shortcut: sem Content-Security-Policy aqui — o site importa Google Fonts e usa estilos inline,
-# então um CSP precisa ser testado contra o site ao vivo antes de ligar; adicione quando for validar.
-<IfModule mod_headers.c>
-  Header always set X-Content-Type-Options "nosniff"
-  Header always set X-Frame-Options "DENY"
-  Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Strict-Transport-Security "max-age=31536000"
-</IfModule>
