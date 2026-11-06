@@ -13,7 +13,7 @@ Site pessoal em português do Brasil, feito com HTML, CSS e JavaScript, sem fram
 | `signature.css`, `signature.js` | Intro de abertura (frases que saem do desfoque; ao rolar, "navarete" em metal líquido cai, solta faíscas e o preto se abre; uma vez por sessão, com botão para pular), esfera de pontos 1-bit no topo com as etiquetas software, web e automação, título formado por pontos (inspirados no Sinal), Limalha atrás do crachá do contato, frase que acende, trilho lateral e nome do rodapé (inspirados no Akari) |
 | `noir.css`, `stars.js` | Fundo todo preto no estilo Sinal: pixels brancos que piscam e nuvens de pontilhado 1-bit que andam devagar atrás do conteúdo (home e estudos de caso) |
 | `metal.css`, `metal.js` | Botão Mercúrio (anel de metal líquido) em todos os botões de contato e de projeto, e o texto em metal da intro. Escala única: 52 px nos botões principais, 44 px nos secundários |
-| `public/curriculo-arthur-navarete.pdf` | Currículo aberto pelos links "Currículo" |
+| `public/arthur-navarete-curriculo.pdf` | Currículo aberto pelos links "Currículo" |
 | `case.css`, `case.js` | Estudos de caso: tela que cresce com a rolagem, linha de leitura, faixa de telas com lente e visualizador |
 | `public/projetos/` | Telas dos projetos (JPG original e WebP em 1440 e 800 px), sempre com dados fictícios |
 | `vite.config.js` | Lista das páginas do build multipágina; uma página nova precisa entrar aqui e no `public/sitemap.xml` |
