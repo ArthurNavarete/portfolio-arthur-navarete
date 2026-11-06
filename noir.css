@@ -1,0 +1,57 @@
+/* Fundo todo preto no estilo da landing page Sinal: preto puro, sem grade nem gradiente, linhas cinza
+   finas e pixels brancos espalhados (desenhados em signature.js). O verde continua só nos destaques. */
+:root {
+  --bg: #000; --bg-2: #000; --panel: #0a0a0a; --line: #262626;
+  --text: #f2f2ef; --muted: #a3a3a0;
+}
+html, body { background: #000; }
+.site-header { background: rgb(0 0 0 / 0.82); border-bottom-color: rgb(255 255 255 / 0.1); }
+.mobile-menu { background: rgb(0 0 0 / 0.96); }
+.hero, .about, .projects, .toolbox, .contact, .circuit, .site-footer, .method { background: transparent; }
+main, .case-page main { background: transparent; }
+.hero-grid, .visual-grid, .grain { display: none; }
+
+/* Topo: o HUD perde o azul e fica em cinza e verde */
+.art-core { background: radial-gradient(circle, #141414, #050505 75%); }
+.art-label { background: #0b0b0b; }
+
+/* Faixa que corre: preta com texto verde, entre duas linhas */
+.ticker { background: #000; color: var(--accent); border-block: 1px solid var(--line); }
+
+/* Como trabalho: preta, com o verde nos números e destaques */
+.method { color: var(--text); }
+.method .section-index, .method .section-heading h2 em { color: var(--accent); }
+.method-grid { border-top-color: var(--line); }
+.method-item + .method-item { border-left-color: var(--line); }
+.method-item, .method-item + .method-item { border-bottom-color: var(--line); }
+.method-item > span { color: var(--accent); }
+.method-item p { color: var(--muted); }
+
+/* Cartões e telas: quase pretos, separados por linhas finas */
+.project-card { background: #050505; border-color: var(--line); }
+.project-card { background-image: radial-gradient(340px at var(--mx, 50%) var(--my, 0%), rgb(255 255 255 / 0.04), transparent 70%); }
+.visual-desktop, .visual-ai, .visual-site, .visual-store { background: radial-gradient(circle at 60% 45%, #161616, #070707 62%, #000); }
+.gallery-thumb { background: #0a0a0a; }
+.glass { background: rgb(12 12 12 / 0.5); }
+.wheel-face { background: #0a0a0a; }
+.mega-marquee { background: linear-gradient(90deg, #000, transparent 12%, transparent 88%, #000); }
+.mega-pause { background: rgb(0 0 0 / 0.8); }
+.toolbox.rail-on .toolbox-content > div { background: linear-gradient(160deg, #111, #060606); }
+.badge-card { background: linear-gradient(160deg, #1a1a1a, #070707 70%); }
+.badge-hole { background: #000; }
+.lightbox::backdrop { background: rgb(0 0 0 / 0.92); }
+.lightbox button { background: rgb(10 10 10 / 0.8); }
+
+/* Estudos de caso */
+.case-grow-media::after { background: linear-gradient(to top, rgb(0 0 0 / 0.65), transparent 40%); }
+.decisions div { background: linear-gradient(135deg, #0d0d0d, #050505); }
+.screen span { background: rgb(0 0 0 / 0.86); }
+.screen:not(.is-active) span { background: rgb(0 0 0 / 0.72); }
+.metal-btn, .wheel-panel a.wheel-go.metal-btn { background: radial-gradient(120% 140% at 50% 0%, #1c1c1c 0%, #040404 70%); }
+
+/* Pixels do Sinal: camada fixa atrás de tudo */
+.sinal-stars { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .sinal-stars { display: none; } }
+.case-page main, .case-page .site-footer { position: relative; z-index: 1; }
+/* Sem brilho colorido no cursor sobre as telas dos projetos */
+.project-visual::after { display: none; }

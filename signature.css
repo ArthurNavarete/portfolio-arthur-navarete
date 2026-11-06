@@ -1,0 +1,104 @@
+/* Efeitos licenciados do Profitize Build (Mercúrio, Limalha) e adaptações dos sites Sinal e Akari,
+   aplicados à identidade do portfólio. Cada um tem versão estática sem JS ou com movimento reduzido. */
+
+
+/* ---------- Limalha: limalha de ferro em volta de ímãs, no fundo do contato (o cursor é mais um ímã) ---------- */
+.contact { isolation: isolate; }
+.contact-inner { z-index: 1; }
+.limalha-stage { position: absolute; right: max(24px, calc((100vw - var(--container)) / 2)); top: 50%; transform: translateY(-50%); width: min(40vw, 560px); aspect-ratio: 1; border-radius: 28px; overflow: hidden; clip-path: inset(0 round 28px); z-index: 0; pointer-events: none;
+  -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent); mask-image: radial-gradient(closest-side, #000 72%, transparent); }
+.limalha-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+@media (max-width: 1000px) { .limalha-stage { display: none; } }
+
+/* ---------- Sinal: fluxo de partículas 1-bit que desce a página ---------- */
+/* O conteúdo fica sempre acima do fluxo: ele só aparece nos espaços vazios entre os blocos. */
+main > section, main > .ticker, main > .circuit, main > .mega-marquee { position: relative; z-index: 1; }
+
+/* ---------- Sinal + Akari: o nome gigante do rodapé, em prata, formado por pontos que chovem ---------- */
+.foot-word { position: relative; overflow: hidden; height: calc(var(--fw-size, 200px) * 0.74); margin: 0 auto; width: calc(100% - 2vw); }
+.foot-word span { position: absolute; left: 50%; top: 0; transform: translateX(-50%); font: 800 var(--fw-size, 200px)/0.9 var(--sans); letter-spacing: -0.08em; white-space: nowrap;
+  background: linear-gradient(180deg, #ffffff 0%, #a7b3ae 46%, #e8eee9 62%, #6f7c77 100%); -webkit-background-clip: text; background-clip: text; color: transparent; transition: opacity 0.9s ease; }
+.foot-word canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.js .foot-word:not(.is-formed) span { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .js .foot-word:not(.is-formed) span { opacity: 1; } .foot-word canvas { display: none; } }
+
+/* ---------- Akari: frase que acende de cinza para branco, linha a linha ---------- */
+.light-line { color: #53635e; transition: color 0.9s cubic-bezier(.16,1,.3,1); transition-delay: calc(var(--l) * 140ms); }
+.light-line strong { color: inherit; transition: color 0.9s cubic-bezier(.16,1,.3,1); transition-delay: inherit; }
+.is-lit .light-line { color: var(--text); }
+.is-lit .light-line strong { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .light-line, .light-line strong { transition: none; } }
+
+/* ---------- Akari: repertório num trilho que anda de lado com a rolagem ---------- */
+@media (min-width: 1101px) and (prefers-reduced-motion: no-preference) {
+  .toolbox.rail-on { padding-block: 0; }
+  .toolbox.rail-on .toolbox-layout { position: sticky; top: 80px; height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; gap: 40px; overflow: hidden; width: 100%; max-width: none; padding-left: max(44px, calc((100vw - var(--container)) / 2)); }
+  .toolbox.rail-on .toolbox-content { display: flex; gap: 18px; width: max-content; border-top: 0; transform: translateX(var(--rail-x, 0px)); will-change: transform; }
+  .toolbox.rail-on .toolbox-content > div { width: 340px; flex: none; min-height: 230px; padding: 26px 26px 28px; border: 1px solid var(--line); background: linear-gradient(160deg, #111, #060606); }
+  .toolbox.rail-on .rail-progress { display: block; }
+}
+.rail-progress { display: none; width: min(420px, 40vw); height: 2px; background: var(--line); }
+.rail-progress i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--rail-p, 0)); background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+/* ---------- Akari: o "sol que nasce" dentro dos botões e o pontinho nos links ---------- */
+.button-ghost, .contact-link { position: relative; overflow: hidden; isolation: isolate; }
+.button-ghost::before, .contact-link::before { content: ""; position: absolute; left: 50%; top: 100%; z-index: -1; width: 160%; aspect-ratio: 1; border-radius: 50%; background: var(--accent); transform: translate(-50%, 0) scale(0.2); transition: transform 0.6s cubic-bezier(.16,1,.3,1); }
+.button-ghost:hover, .contact-link:hover { color: #101a13; border-color: var(--accent); }
+.button-ghost:hover::before, .contact-link:hover::before { transform: translate(-50%, -62%) scale(1); }
+.desktop-nav a::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-right: 8px; opacity: 0; transform: scale(0); transition: opacity 0.3s, transform 0.4s cubic-bezier(.16,1,.3,1); box-shadow: 0 0 8px var(--accent); }
+.desktop-nav a:hover::before, .desktop-nav a.is-active::before { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .button-ghost::before, .contact-link::before, .desktop-nav a::before { transition: none; } }
+
+/* ---------- Intro (estudada no centralpi.com.br com o RES, recriada com outra marca e outro texto):
+   as frases entram saindo do desfoque; ao rolar, "navarete" em metal líquido cai, esmaga as frases numa linha,
+   solta faíscas e o preto se abre a partir dessa linha. Depois os pontos formam o título (Sinal). ---------- */
+.intro { position: fixed; inset: 0; z-index: 200; color: var(--text); --line-y: 50%; cursor: s-resize; }
+.intro-veil { position: absolute; left: 0; right: 0; background: #000; transition: transform 1.15s cubic-bezier(.7,0,.2,1); }
+.intro-veil--top { top: 0; height: var(--line-y); }
+.intro-veil--bottom { top: var(--line-y); bottom: 0; }
+.intro.is-open .intro-veil--top { transform: translateY(-100%); }
+.intro.is-open .intro-veil--bottom { transform: translateY(100%); }
+.intro-lines { position: absolute; left: 50%; top: 50%; width: min(94vw, 1320px); transform: translate(-50%, -50%); text-align: center; transform-origin: 50% 50%; }
+.intro-line { margin: 0; opacity: 0; filter: blur(18px); transform: translateY(22px); transition: opacity 1s cubic-bezier(.22,1,.36,1), filter 1.1s cubic-bezier(.22,1,.36,1), transform 1.1s cubic-bezier(.22,1,.36,1); }
+.intro.is-in .intro-line { opacity: 1; filter: none; transform: none; }
+.intro.is-in .intro-line:nth-child(2) { transition-delay: .45s; }
+.intro.is-in .intro-line:nth-child(3) { transition-delay: .9s; }
+.intro-line--kicker { font: 500 clamp(13px, 1.3vw, 17px)/1 var(--mono); letter-spacing: .22em; color: var(--accent); margin-bottom: clamp(14px, 2vw, 26px); }
+.intro-line--big { font: 800 clamp(26px, 4.5vw, 80px)/1 var(--sans); letter-spacing: -.055em; text-transform: uppercase; text-wrap: balance; }
+.intro.is-crush .intro-lines { transform: translate(-50%, -50%) scale(1.04, .015); opacity: .9; transition: transform .2s cubic-bezier(.6,0,.9,.4), opacity .5s .25s; }
+.intro.is-open .intro-lines { opacity: 0; }
+.intro-flash { position: absolute; left: 0; right: 0; top: var(--line-y); height: 2px; margin-top: -1px; background: linear-gradient(90deg, transparent, var(--accent) 20%, #fff 50%, var(--accent) 80%, transparent); box-shadow: 0 0 24px 4px rgb(214 243 106 / .55); transform: scaleX(0); opacity: 0; }
+.intro.is-crush .intro-flash { transform: scaleX(1); opacity: 1; transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .1s; }
+.intro.is-open .intro-flash { opacity: 0; transition: opacity .9s .3s; }
+.intro-metal { position: absolute; left: 50%; top: var(--line-y); width: min(86vw, 1040px); height: min(24vw, 290px); transform: translate(-50%, -100%) translateY(-75vh); pointer-events: none; z-index: 3; }
+.intro-metal > canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .3s; }
+.intro-metal.is-ready > canvas { opacity: 1; }
+.intro-metal b { position: absolute; inset: 0; display: grid; place-items: center; font: 800 min(19vw, 230px)/1 var(--sans); letter-spacing: -.06em;
+  background: linear-gradient(180deg, #fff 0%, #9a9a9a 48%, #f4f4f4 60%, #6b6b6b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; transition: opacity .3s; }
+.intro-metal.is-ready b { opacity: 0; }
+.intro.is-falling .intro-metal { transform: translate(-50%, -100%) translateY(4%); transition: transform .42s cubic-bezier(.55,0,.95,.45); }
+.intro.is-crush .intro-metal { animation: intro-land .5s cubic-bezier(.2,.9,.3,1); }
+@keyframes intro-land { 0% { transform: translate(-50%, -100%) translateY(4%) scaleY(.86); } 60% { transform: translate(-50%, -100%) translateY(-3%) scaleY(1.03); } 100% { transform: translate(-50%, -100%) translateY(0); } }
+.intro.is-leaving .intro-metal { transform: translate(-50%, -100%) translateY(-70vh) scale(.7); opacity: 0; transition: transform .7s cubic-bezier(.6,0,.4,1), opacity .45s .1s; animation: none; }
+.intro-sparks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
+.intro-hint { position: absolute; left: 50%; bottom: clamp(24px, 6vh, 56px); transform: translateX(-50%); display: flex; gap: 18px; white-space: nowrap; font: 500 11px/1 var(--mono); letter-spacing: .2em; color: var(--muted); opacity: 0; transition: opacity .8s 1.6s; }
+.intro.is-in .intro-hint { opacity: 1; }
+.intro-hint i { font-style: normal; color: var(--accent); animation: intro-nudge 1.4s ease-in-out infinite; display: inline-block; }
+@keyframes intro-nudge { 50% { transform: translateY(5px); } }
+.intro.is-crush .intro-hint, .intro.is-crush .intro-skip { opacity: 0; transition: opacity .2s; }
+.intro-skip { position: absolute; right: 20px; bottom: 20px; z-index: 5; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: #000; color: var(--muted); font: 500 12px/1 var(--mono); letter-spacing: .1em; cursor: pointer; }
+.intro-skip:hover, .intro-skip:focus-visible { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 700px) { .intro-hint { flex-direction: column; align-items: center; gap: 10px; bottom: 84px; } .intro-skip { left: 50%; right: auto; transform: translateX(-50%); } }
+/* Título do topo formado por pontos: o texto real fica no HTML e aparece quando os pontos pousam. */
+.title-dots { position: fixed; inset: 0; z-index: 150; pointer-events: none; }
+html.intro-running .hero h1, html.title-forming .hero h1 { opacity: 0 !important; }
+.hero h1 { transition: opacity 0.4s ease; }
+html.intro-running { overflow: hidden; }
+
+/* ---------- Esfera de pontos 1-bit no lugar do HUD do topo ---------- */
+.hero-art { filter: none; }
+.orb { position: absolute; inset: -18%; width: 136%; height: 136%; pointer-events: none; }
+.orb-tag { position: absolute; left: 0; top: 0; margin: -15px 0 0 12px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid var(--line); background: #000;
+  font: 400 10px/1 var(--mono); letter-spacing: .1em; color: var(--text); white-space: nowrap; transition: opacity .3s; will-change: transform; }
+.orb-tag i { width: 5px; height: 5px; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.hero-art .art-coordinate { color: var(--muted); }

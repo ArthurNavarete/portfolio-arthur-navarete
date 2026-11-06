@@ -138,7 +138,7 @@ function setupParticles() {
   canvas.width = Math.round(width * ratio);
   canvas.height = Math.round(height * ratio);
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  const count = Math.min(58, Math.round(width / 24));
+  const count = document.querySelector('.orb') ? 0 : Math.min(58, Math.round(width / 24));
   particles = Array.from({ length: count }, (_, index) => ({
     x: (index * 89.37) % width,
     y: (index * 153.19) % height,
@@ -393,7 +393,8 @@ if (badge && finePointer.matches && !reducedMotion.matches) {
 
 // Partículas que viram formas conforme a seção (telas largas, com movimento permitido).
 const morph = document.querySelector('.morph');
-if (morph && !reducedMotion.matches && window.matchMedia('(min-width: 1101px)').matches) {
+// O fluxo 1-bit (signature.js) substitui esta camada quando está na página.
+if (morph && !document.querySelector('.sinal-flow, .orb') && !reducedMotion.matches && window.matchMedia('(min-width: 1101px)').matches) {
   const ctx = morph.getContext('2d');
   const COUNT = 640;
   const shapes = [

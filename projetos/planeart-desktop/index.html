@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#091316" />
+    <title>Planeart — software de gestão para escritório de arquitetura | Arthur Navarete</title>
+    <meta name="description" content="Estudo de caso: aplicação desktop em desenvolvimento para reunir projetos, clientes, tarefas e financeiro de um escritório de arquitetura." />
+    <link rel="canonical" href="https://arthurnavarete.com.br/projetos/planeart-desktop/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Arthur Navarete" />
+    <meta property="og:url" content="https://arthurnavarete.com.br/projetos/planeart-desktop/" />
+    <meta property="og:title" content="Planeart — Software de gestão" />
+    <meta property="og:description" content="Aplicação desktop para um escritório de arquitetura reunir projetos, clientes, tarefas e financeiro em um só lugar. Ainda não foi publicada." />
+    <meta property="og:image" content="https://arthurnavarete.com.br/projetos/planeart-desktop.jpg" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="Tela de visão geral do Planeart com indicadores de clientes, projetos, tarefas e financeiro (dados fictícios)" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23091316'/%3E%3Cpath d='M14 47 28 17h8l14 30h-9l-3-7H25l-3 7zm14-14h7l-3.5-8z' fill='%23d6f36a'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/effects.css" />
+    <link rel="stylesheet" href="/case.css" />
+    <link rel="stylesheet" href="/metal.css" />
+    <link rel="stylesheet" href="/noir.css" />
+    <script type="module" src="/case.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://arthurnavarete.com.br/projetos/planeart-desktop/#projeto","name":"Planeart","url":"https://arthurnavarete.com.br/projetos/planeart-desktop/","description":"Estudo de caso: aplicação desktop em desenvolvimento para reunir projetos, clientes, tarefas e financeiro de um escritório de arquitetura.","inLanguage":"pt-BR","image":"https://arthurnavarete.com.br/projetos/planeart-desktop.jpg","creator":{"@id":"https://arthurnavarete.com.br/#arthur"},"keywords":"Python, PySide6, FastAPI, SQLAlchemy, Alembic, SQLite e PostgreSQL, pytest"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://arthurnavarete.com.br/"},{"@type":"ListItem","position":2,"name":"Planeart","item":"https://arthurnavarete.com.br/projetos/planeart-desktop/"}]}]}</script>
+  </head>
+  <body class="case-page">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="refracao" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="4" result="ruido" /><feGaussianBlur in="ruido" stdDeviation="2" result="suave" /><feDisplacementMap in="SourceGraphic" in2="suave" scale="34" xChannelSelector="R" yChannelSelector="G" /></filter></svg>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="/" aria-label="Arthur Navarete, voltar ao início"><span class="brand-mark">an<span>.</span></span><span class="brand-name">Arthur Navarete</span></a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="/#sobre">Sobre</a><a href="/#projetos" aria-current="page">Projetos</a><a href="/#metodo">Como trabalho</a><a href="/#contato">Contato</a><a class="nav-cv" href="/curriculo-arthur-navarete.pdf" target="_blank" rel="noopener noreferrer">Currículo<span class="visually-hidden"> (abre em nova aba)</span></a>
+        </nav>
+        <a class="nav-contact metal-btn metal-btn--sm" href="mailto:arthurnavarete@gmail.com"><span class="metal-btn__metal" aria-hidden="true"></span><span class="metal-btn__label">Vamos conversar</span><span class="metal-btn__orb" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu"><span></span><span></span></button>
+      </div>
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Navegação para celular" hidden>
+        <a href="/#sobre">Sobre <span>01</span></a><a href="/#projetos">Projetos <span>02</span></a><a href="/#metodo">Como trabalho <span>03</span></a><a href="/#contato">Contato <span>04</span></a><a href="/curriculo-arthur-navarete.pdf" target="_blank" rel="noopener noreferrer">Currículo <span>↗</span><span class="visually-hidden"> (abre em nova aba)</span></a>
+      </nav>
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="container case-head">
+        <a class="back-link" href="/#projetos"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg> Todos os projetos</a>
+        <p class="case-kicker"><span class="status">EM DESENVOLVIMENTO</span><span>Software de gestão</span></p>
+        <h1>Planeart</h1>
+        <p class="case-summary">Aplicação desktop para um escritório de arquitetura reunir projetos, clientes, tarefas e financeiro em um só lugar. Ainda não foi publicada.</p>
+        <div class="case-actions">
+          
+          <a class="metal-btn metal-btn--down" href="#telas"><span class="metal-btn__metal" aria-hidden="true"></span><span class="metal-btn__label">Ver as telas</span><span class="metal-btn__orb" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+      </div>
+
+      <section class="case-grow" aria-label="Tela principal">
+        <div class="case-grow-stage">
+          <figure class="case-grow-media">
+            <picture><source type="image/webp" srcset="/projetos/planeart-desktop-800.webp 800w, /projetos/planeart-desktop.webp 1440w" sizes="100vw" /><img style="view-transition-name: shot-desktop" src="/projetos/planeart-desktop.jpg" alt="Tela de visão geral do Planeart com indicadores de clientes, projetos, tarefas e financeiro (dados fictícios)" width="1440" height="900" fetchpriority="high" decoding="async" /></picture>
+          </figure>
+          <span class="case-grow-label" aria-hidden="true">Visão geral</span>
+        </div>
+      </section>
+
+      <div class="container case-body">
+        <aside class="case-aside" aria-label="Ficha do projeto">
+          <h2>Estado</h2>
+          <span class="status">EM DESENVOLVIMENTO</span>
+          <h2>Tecnologias</h2>
+          <ul><li>Python</li><li>PySide6</li><li>FastAPI</li><li>SQLAlchemy</li><li>Alembic</li><li>SQLite e PostgreSQL</li><li>pytest</li></ul>
+        </aside>
+        <div class="case-content">
+          <div class="case-line" aria-hidden="true"><svg viewBox="0 0 2 100" preserveAspectRatio="none"><line class="base" x1="1" y1="0" x2="1" y2="100" /><line class="draw" x1="1" y1="0" x2="1" y2="100" pathLength="1" /></svg></div>
+          <section aria-labelledby="contexto"><h2 id="contexto">Contexto</h2><p>A rotina de um escritório de arquitetura passa por cadastros de clientes, fases de projeto, tarefas da equipe, documentos e controle financeiro. Quando cada coisa fica em um lugar diferente, é difícil saber como cada projeto está.</p></section>
+          <section aria-labelledby="o-que-fiz"><h2 id="o-que-fiz">O que eu fiz</h2><ul><li>Aplicação desktop em PySide6 que conversa com um servidor central em FastAPI.</li><li>Cadastros de projetos e clientes, quadro de tarefas e telas de financeiro.</li><li>Papéis de acesso e sessões, para que cada pessoa veja só o que precisa.</li><li>Banco de dados versionado com migrações e testes automatizados no servidor e no aplicativo.</li><li>Rotinas de cópia de segurança cifrada e de restauração, testadas em ambiente separado.</li></ul></section>
+          <section aria-labelledby="decisoes"><h2 id="decisoes">Decisões</h2><dl class="decisions"><div><dt>Um servidor central</dt><dd>O aplicativo instalado nas máquinas não guarda o banco nem tem acesso de administrador: tudo passa pelo servidor, que aplica as regras de acesso.</dd></div><div><dt>Mudanças de banco controladas</dt><dd>A estrutura do banco evolui por migrações versionadas, para atualizar sem perder dados.</dd></div><div><dt>Restaurar antes de confiar</dt><dd>A cópia de segurança só conta quando a restauração é testada; isso é feito em um ambiente descartável.</dd></div></dl></section>
+          <section aria-labelledby="estado"><h2 id="estado">Onde está hoje</h2><p>Em desenvolvimento e ainda não publicado. Não há data de lançamento definida. As telas abaixo usam dados fictícios.</p></section>
+        </div>
+      </div>
+
+      <section class="screens" id="telas" aria-labelledby="telas-titulo">
+        <div class="container">
+          <h2 id="telas-titulo">Telas</h2>
+          <p>Passe o mouse ou o foco do teclado para abrir uma tela; na tela aberta, a lente amplia o ponto sob o cursor. Clique para ver em tela cheia.</p>
+          <div class="screen-strip">
+            <a class="screen is-active" href="/projetos/planeart-desktop.webp" data-gallery="desktop" data-caption="Visão geral"><picture><source type="image/webp" srcset="/projetos/planeart-desktop-800.webp 800w, /projetos/planeart-desktop.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-desktop.jpg" alt="Tela de visão geral do Planeart com indicadores de clientes, projetos, tarefas e financeiro (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Visão geral</span></a>
+            <a class="screen" href="/projetos/planeart-desktop-projetos.webp" data-gallery="desktop" data-caption="Projetos"><picture><source type="image/webp" srcset="/projetos/planeart-desktop-projetos-800.webp 800w, /projetos/planeart-desktop-projetos.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-desktop-projetos.jpg" alt="Lista de projetos com cliente, fase, progresso, situação e saldo (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Projetos</span></a>
+            <a class="screen" href="/projetos/planeart-desktop-quadro.webp" data-gallery="desktop" data-caption="Quadro de tarefas"><picture><source type="image/webp" srcset="/projetos/planeart-desktop-quadro-800.webp 800w, /projetos/planeart-desktop-quadro.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-desktop-quadro.jpg" alt="Quadro de tarefas pendentes, atrasadas e concluídas (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Quadro de tarefas</span></a>
+          </div>
+        </div>
+      </section>
+
+      <nav class="container next-case" aria-label="Próximo estudo de caso">
+        <a href="/projetos/planeart-arquitetura/"><small>Próximo projeto</small><strong>Planeart Arquitetura</strong></a>
+      </nav>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-inner"><span>© <span id="year">2026</span> Arthur Navarete</span><span>Maringá, Paraná · Brasil</span><a href="#conteudo">Voltar ao início ↑</a></div></footer>
+    <dialog class="lightbox" aria-label="Visualizador de imagens"><figure><img alt="" /><figcaption><span class="lightbox-count"></span><span class="lightbox-caption"></span></figcaption></figure><button class="lightbox-close" type="button" aria-label="Fechar">×</button><button class="lightbox-prev" type="button" aria-label="Imagem anterior">←</button><button class="lightbox-next" type="button" aria-label="Próxima imagem">→</button></dialog>
+  </body>
+</html>

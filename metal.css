@@ -1,0 +1,45 @@
+/* Mercúrio: botão com anel de metal líquido (shader @paper-design/shaders, Apache-2.0).
+   Item licenciado do Profitize Build, adaptado à paleta do site. Sem JS, fica o anel liso. */
+.metal-btn {
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --orb: 40px;
+  position: relative; display: inline-flex; align-items: center; gap: 14px; height: 52px; padding: 0 6px 0 22px;
+  border: 0; border-radius: 999px; font: 700 14px/1 var(--sans); letter-spacing: -0.01em; white-space: nowrap; color: #eef3e4;
+  background: radial-gradient(120% 140% at 50% 0%, #1b2a2a 0%, #050b0c 70%);
+  box-shadow: inset 0 0 0 1px rgb(214 243 106 / 0.3), 0 18px 50px -18px rgb(214 243 106 / 0.42);
+  isolation: isolate; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform 0.18s var(--ease), box-shadow 0.25s var(--ease);
+}
+.metal-btn:active { transform: scale(0.97); }
+.metal-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.metal-btn__metal { position: absolute; inset: 0; z-index: -1; display: block; border-radius: inherit; opacity: 0; transition: opacity 0.8s var(--ease); }
+.metal-btn__metal.is-ready { opacity: 1; }
+.metal-btn__metal > canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.metal-btn__metal.is-ready + .metal-btn__label { text-shadow: 0 1px 12px rgb(0 0 0 / 0.6); }
+.metal-btn__orb { position: relative; display: grid; place-items: center; flex: none; width: var(--orb); height: var(--orb); border-radius: 50%; overflow: hidden; color: #0b120f;
+  background: linear-gradient(160deg, #ffffff 0%, #e7eedc 45%, #b4c0a8 100%);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 5px rgb(0 0 0 / 0.2), 0 4px 18px -6px rgb(214 243 106 / 0.55); }
+.metal-btn__orb svg { position: absolute; width: 16px; height: 16px; transition: transform 0.35s var(--ease); }
+.metal-btn__orb svg + svg { transform: translateX(calc(var(--orb) / -2 - 50% - 2px)); }
+@media (hover: hover) {
+  .metal-btn:hover .metal-btn__orb svg:first-child { transform: translateX(calc(var(--orb) / 2 + 50% + 2px)); }
+  .metal-btn:hover .metal-btn__orb svg + svg { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) { .metal-btn, .metal-btn__metal, .metal-btn__orb svg { transition: none; } }
+.metal-btn--sm { --orb: 34px; height: 44px; padding: 0 5px 0 18px; gap: 10px; font-size: 13px; }
+.metal-btn--sm .metal-btn__orb svg { width: 13px; height: 13px; }
+.metal-btn--md { /* mesma escala do botão principal */ }
+.nav-contact.metal-btn { border: 0; }
+/* Variantes nos lugares onde o botão substitui estilos antigos */
+.nav-contact.metal-btn { border: 0; font-size: 13px; letter-spacing: 0; transform: none; }
+.nav-contact.metal-btn span { padding-left: 0; color: inherit; }
+.nav-contact.metal-btn .metal-btn__orb { color: #0b120f; }
+@media (max-width: 760px) { .nav-contact.metal-btn { display: none; } }
+.wheel-panel a.wheel-go.metal-btn { min-height: 44px; padding: 0 5px 0 18px; color: #eef3e4; font-weight: 700; background: radial-gradient(120% 140% at 50% 0%, #1b2a2a 0%, #050b0c 70%); }
+.case-cta.metal-btn { margin-top: 8px; }
+.contact-actions:has(.contact-metal) { align-items: center; }
+/* Escala única: 52 px nos botões principais (Mercúrio e contorno), 44 px nos secundários. */
+.button { min-height: 52px; }
+@media (max-width: 760px) { .hero-actions .metal-btn, .hero-actions .button { height: 52px; min-height: 52px; } .hero-actions .metal-btn { justify-content: space-between; } }
+/* Seta para baixo ("Ver as telas"): o mesmo orbe, girado */
+.metal-btn--down .metal-btn__orb { transform: rotate(90deg); }

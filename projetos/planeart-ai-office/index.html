@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#091316" />
+    <title>Planeart AI Office — ferramenta interna com revisão humana | Arthur Navarete</title>
+    <meta name="description" content="Estudo de caso: aplicação web interna de um escritório de arquitetura que organiza e-mails, arquivos e projetos e sugere pendências com o trecho de origem e aprovação humana." />
+    <link rel="canonical" href="https://arthurnavarete.com.br/projetos/planeart-ai-office/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Arthur Navarete" />
+    <meta property="og:url" content="https://arthurnavarete.com.br/projetos/planeart-ai-office/" />
+    <meta property="og:title" content="Planeart AI Office — Ferramenta interna" />
+    <meta property="og:description" content="Aplicação web interna de um escritório de arquitetura. Reúne e-mails, arquivos e projetos e sugere pendências a partir deles, sempre com o trecho de origem e a aprovação de uma pessoa." />
+    <meta property="og:image" content="https://arthurnavarete.com.br/projetos/planeart-ai-office.jpg" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="Tela inicial do Planeart AI Office com itens que aguardam atenção e mudanças recentes (dados fictícios)" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23091316'/%3E%3Cpath d='M14 47 28 17h8l14 30h-9l-3-7H25l-3 7zm14-14h7l-3.5-8z' fill='%23d6f36a'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/effects.css" />
+    <link rel="stylesheet" href="/case.css" />
+    <link rel="stylesheet" href="/metal.css" />
+    <link rel="stylesheet" href="/noir.css" />
+    <script type="module" src="/case.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://arthurnavarete.com.br/projetos/planeart-ai-office/#projeto","name":"Planeart AI Office","url":"https://arthurnavarete.com.br/projetos/planeart-ai-office/","description":"Estudo de caso: aplicação web interna de um escritório de arquitetura que organiza e-mails, arquivos e projetos e sugere pendências com o trecho de origem e aprovação humana.","inLanguage":"pt-BR","image":"https://arthurnavarete.com.br/projetos/planeart-ai-office.jpg","creator":{"@id":"https://arthurnavarete.com.br/#arthur"},"keywords":"Python, FastAPI, PostgreSQL, Next.js, React, TypeScript, Docker, GitHub Actions"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://arthurnavarete.com.br/"},{"@type":"ListItem","position":2,"name":"Planeart AI Office","item":"https://arthurnavarete.com.br/projetos/planeart-ai-office/"}]}]}</script>
+  </head>
+  <body class="case-page">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="refracao" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="4" result="ruido" /><feGaussianBlur in="ruido" stdDeviation="2" result="suave" /><feDisplacementMap in="SourceGraphic" in2="suave" scale="34" xChannelSelector="R" yChannelSelector="G" /></filter></svg>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="/" aria-label="Arthur Navarete, voltar ao início"><span class="brand-mark">an<span>.</span></span><span class="brand-name">Arthur Navarete</span></a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="/#sobre">Sobre</a><a href="/#projetos" aria-current="page">Projetos</a><a href="/#metodo">Como trabalho</a><a href="/#contato">Contato</a><a class="nav-cv" href="/curriculo-arthur-navarete.pdf" target="_blank" rel="noopener noreferrer">Currículo<span class="visually-hidden"> (abre em nova aba)</span></a>
+        </nav>
+        <a class="nav-contact metal-btn metal-btn--sm" href="mailto:arthurnavarete@gmail.com"><span class="metal-btn__metal" aria-hidden="true"></span><span class="metal-btn__label">Vamos conversar</span><span class="metal-btn__orb" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu"><span></span><span></span></button>
+      </div>
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Navegação para celular" hidden>
+        <a href="/#sobre">Sobre <span>01</span></a><a href="/#projetos">Projetos <span>02</span></a><a href="/#metodo">Como trabalho <span>03</span></a><a href="/#contato">Contato <span>04</span></a><a href="/curriculo-arthur-navarete.pdf" target="_blank" rel="noopener noreferrer">Currículo <span>↗</span><span class="visually-hidden"> (abre em nova aba)</span></a>
+      </nav>
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="container case-head">
+        <a class="back-link" href="/#projetos"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg> Todos os projetos</a>
+        <p class="case-kicker"><span class="status">NO AR · USO INTERNO</span><span>Ferramenta interna</span></p>
+        <h1>Planeart AI Office</h1>
+        <p class="case-summary">Aplicação web interna de um escritório de arquitetura. Reúne e-mails, arquivos e projetos e sugere pendências a partir deles, sempre com o trecho de origem e a aprovação de uma pessoa.</p>
+        <div class="case-actions">
+          
+          <a class="metal-btn metal-btn--down" href="#telas"><span class="metal-btn__metal" aria-hidden="true"></span><span class="metal-btn__label">Ver as telas</span><span class="metal-btn__orb" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+      </div>
+
+      <section class="case-grow" aria-label="Tela principal">
+        <div class="case-grow-stage">
+          <figure class="case-grow-media">
+            <picture><source type="image/webp" srcset="/projetos/planeart-ai-office-800.webp 800w, /projetos/planeart-ai-office.webp 1440w" sizes="100vw" /><img style="view-transition-name: shot-office" src="/projetos/planeart-ai-office.jpg" alt="Tela inicial do Planeart AI Office com itens que aguardam atenção e mudanças recentes (dados fictícios)" width="1440" height="900" fetchpriority="high" decoding="async" /></picture>
+          </figure>
+          <span class="case-grow-label" aria-hidden="true">Hoje</span>
+        </div>
+      </section>
+
+      <div class="container case-body">
+        <aside class="case-aside" aria-label="Ficha do projeto">
+          <h2>Estado</h2>
+          <span class="status">NO AR · USO INTERNO</span>
+          <h2>Tecnologias</h2>
+          <ul><li>Python</li><li>FastAPI</li><li>PostgreSQL</li><li>Next.js</li><li>React</li><li>TypeScript</li><li>Docker</li><li>GitHub Actions</li></ul>
+        </aside>
+        <div class="case-content">
+          <div class="case-line" aria-hidden="true"><svg viewBox="0 0 2 100" preserveAspectRatio="none"><line class="base" x1="1" y1="0" x2="1" y2="100" /><line class="draw" x1="1" y1="0" x2="1" y2="100" pathLength="1" /></svg></div>
+          <section aria-labelledby="contexto"><h2 id="contexto">Contexto</h2><p>Pedidos de clientes, decisões de reunião e arquivos de projeto ficavam espalhados entre e-mail, pastas e conversas. Quando uma informação importante não tem fonte, responsável nem projeto associado, ela se perde.</p></section>
+          <section aria-labelledby="o-que-fiz"><h2 id="o-que-fiz">O que eu fiz</h2><ul><li>Aplicação web com caixa de entrada de solicitações, fila de aprovações e organização por projeto.</li><li>Integrações somente leitura com o Gmail do escritório (Google Workspace) e com pastas do OneDrive.</li><li>Busca e filtro por projeto na caixa de entrada e nos arquivos; criação de projeto a partir de uma pasta, sempre com confirmação.</li><li>Publicação em servidor próprio com contêineres, HTTPS, verificação de saúde no deploy e testes automáticos a cada mudança.</li><li>Revisões de segurança e registro do consentimento para o uso de dados reais.</li></ul></section>
+          <section aria-labelledby="decisoes"><h2 id="decisoes">Decisões</h2><dl class="decisions"><div><dt>Nada vira ação sem uma pessoa</dt><dd>Toda sugestão entra numa fila de aprovação. A aplicação não envia e-mails nem altera arquivos por conta própria.</dd></div><div><dt>Toda sugestão mostra de onde veio</dt><dd>Cada pendência aparece junto do trecho do e-mail ou do arquivo que a originou, para que a pessoa confira antes de aprovar.</dd></div><div><dt>Integrações só de leitura</dt><dd>O acesso ao Gmail e ao OneDrive é apenas de leitura, o que reduz o estrago possível se algo der errado.</dd></div><div><dt>Fora dos buscadores</dt><dd>Como é uma ferramenta interna, as páginas pedem para não ser indexadas e o acesso exige login.</dd></div></dl></section>
+          <section aria-labelledby="estado"><h2 id="estado">Onde está hoje</h2><p>Está no ar em servidor próprio, de uso interno do escritório e sem acesso público. O dono está testando o uso com o Gmail e as pastas reais, com o consentimento registrado. As telas abaixo mostram dados fictícios.</p><p class="note">Não há link público porque a aplicação é de uso interno do escritório.</p></section>
+        </div>
+      </div>
+
+      <section class="screens" id="telas" aria-labelledby="telas-titulo">
+        <div class="container">
+          <h2 id="telas-titulo">Telas</h2>
+          <p>Passe o mouse ou o foco do teclado para abrir uma tela; na tela aberta, a lente amplia o ponto sob o cursor. Clique para ver em tela cheia.</p>
+          <div class="screen-strip">
+            <a class="screen is-active" href="/projetos/planeart-ai-office.webp" data-gallery="office" data-caption="Hoje"><picture><source type="image/webp" srcset="/projetos/planeart-ai-office-800.webp 800w, /projetos/planeart-ai-office.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-ai-office.jpg" alt="Tela inicial do Planeart AI Office com itens que aguardam atenção e mudanças recentes (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Hoje</span></a>
+            <a class="screen" href="/projetos/planeart-ai-office-inbox.webp" data-gallery="office" data-caption="Caixa de entrada"><picture><source type="image/webp" srcset="/projetos/planeart-ai-office-inbox-800.webp 800w, /projetos/planeart-ai-office-inbox.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-ai-office-inbox.jpg" alt="Caixa de entrada com solicitações extraídas de um e-mail, cada uma com o trecho de origem (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Caixa de entrada</span></a>
+            <a class="screen" href="/projetos/planeart-ai-office-aprovacoes.webp" data-gallery="office" data-caption="Aprovações"><picture><source type="image/webp" srcset="/projetos/planeart-ai-office-aprovacoes-800.webp 800w, /projetos/planeart-ai-office-aprovacoes.webp 1440w" sizes="(max-width: 760px) 100vw, 70vw" /><img src="/projetos/planeart-ai-office-aprovacoes.jpg" alt="Fila de aprovações com rascunhos que dependem de revisão humana (dados fictícios)" width="1440" height="900" loading="lazy" decoding="async" /></picture><span>Aprovações</span></a>
+          </div>
+        </div>
+      </section>
+
+      <nav class="container next-case" aria-label="Próximo estudo de caso">
+        <a href="/projetos/planeart-desktop/"><small>Próximo projeto</small><strong>Planeart</strong></a>
+      </nav>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-inner"><span>© <span id="year">2026</span> Arthur Navarete</span><span>Maringá, Paraná · Brasil</span><a href="#conteudo">Voltar ao início ↑</a></div></footer>
+    <dialog class="lightbox" aria-label="Visualizador de imagens"><figure><img alt="" /><figcaption><span class="lightbox-count"></span><span class="lightbox-caption"></span></figcaption></figure><button class="lightbox-close" type="button" aria-label="Fechar">×</button><button class="lightbox-prev" type="button" aria-label="Imagem anterior">←</button><button class="lightbox-next" type="button" aria-label="Próxima imagem">→</button></dialog>
+  </body>
+</html>
