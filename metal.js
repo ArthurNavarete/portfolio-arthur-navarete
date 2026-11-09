@@ -76,14 +76,15 @@ if (typeof OffscreenCanvas !== 'undefined') {
 
 
 // Texto em metal líquido (usado pela intro): a máscara é o próprio texto desenhado num canvas.
-export async function mountMetalText(el, text, font) {
+export async function mountMetalText(el, text, font, align = 'center', tune = {}) {
   if (typeof OffscreenCanvas === 'undefined') return null;
   const w = el.offsetWidth, h = el.offsetHeight, k = 2;
   const c = new OffscreenCanvas(Math.round(w * k), Math.round(h * k));
   const x = c.getContext('2d');
-  x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillStyle = '#fff'; x.textAlign = align; x.textBaseline = 'middle';
   x.font = font.replace(/(\d+(?:\.\d+)?)px/, (m, n) => `${n * k}px`);
-  x.fillText(text, c.width / 2, c.height / 2);
+  if ('letterSpacing' in x) x.letterSpacing = `${-0.05 * parseFloat(font.match(/(\d+(?:\.\d+)?)px/)[1]) * k}px`;
+  x.fillText(text, align === 'left' ? 2 * k : c.width / 2, c.height / 2);
   const blob = await c.convertToBlob({ type: 'image/png' });
   const { pngBlob } = await toProcessedLiquidMetal(new File([blob], 'texto.png', { type: 'image/png' }));
   const img = new Image(); img.src = URL.createObjectURL(pngBlob); await img.decode();
@@ -92,9 +93,17 @@ export async function mountMetalText(el, text, font) {
     u_colorBack: getShaderColorFromString('rgba(0,0,0,0)'),
     u_colorTint: getShaderColorFromString('#ffffff'),
     u_image: img, u_isImage: true, u_shape: LiquidMetalShapes.none,
-    u_repetition: 2, u_softness: 0.1, u_shiftRed: 0.35, u_shiftBlue: 0.35, u_distortion: 0.07, u_contour: 0.4, u_angle: 70,
+    u_repetition: 2, u_softness: 0.1, u_shiftRed: 0.35, u_shiftBlue: 0.35, u_distortion: 0.07, u_contour: 0.4, u_angle: 70, ...tune,
     u_fit: ShaderFitOptions.contain, u_scale: 1, u_rotation: 0, u_offsetX: 0, u_offsetY: 0, u_originX: 0.5, u_originY: 0.5, u_worldWidth: 0, u_worldHeight: 0,
   }, undefined, reduced ? 0 : 1, 0, 2, undefined, ['u_image']);
   el.classList.add('is-ready');
   return mount;
 }
+
+// Marca do topo em metal líquido, em todas as páginas; fica animada o tempo todo (pausa só com movimento reduzido).
+const brandMetal = document.querySelector('.brand-metal');
+if (brandMetal) (document.fonts?.ready || Promise.resolve()).then(() => {
+  const px = parseFloat(getComputedStyle(brandMetal.querySelector('b')).fontSize);
+  // Em tamanho pequeno as faixas escuras do metal somem no preto: menos faixas e mais suaves.
+  return mountMetalText(brandMetal, 'navarete', `800 ${px}px Manrope, Inter, sans-serif`, 'left', { u_repetition: 1.2, u_softness: 0.35, u_contour: 0.15, u_shiftRed: 0.2, u_shiftBlue: 0.2 });
+}).catch(() => { /* fica o prateado em CSS */ });

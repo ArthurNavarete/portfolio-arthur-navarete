@@ -79,7 +79,7 @@ main > section, main > .ticker, main > .circuit, main > .mega-marquee { position
 .intro.is-falling .intro-metal { transform: translate(-50%, -100%) translateY(4%); transition: transform .42s cubic-bezier(.55,0,.95,.45); }
 .intro.is-crush .intro-metal { animation: intro-land .5s cubic-bezier(.2,.9,.3,1); }
 @keyframes intro-land { 0% { transform: translate(-50%, -100%) translateY(4%) scaleY(.86); } 60% { transform: translate(-50%, -100%) translateY(-3%) scaleY(1.03); } 100% { transform: translate(-50%, -100%) translateY(0); } }
-.intro.is-leaving .intro-metal { transform: translate(-50%, -100%) translateY(-70vh) scale(.7); opacity: 0; transition: transform .7s cubic-bezier(.6,0,.4,1), opacity .45s .1s; animation: none; }
+.intro.is-leaving .intro-metal { transform: translate(-50%, -100%) translate(var(--to-x, 0px), var(--to-y, -70vh)) scale(var(--to-s, .7)); opacity: 0; transition: transform .8s cubic-bezier(.65,0,.25,1), opacity .25s .62s; animation: none; }
 .intro-sparks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
 .intro-hint { position: absolute; left: 50%; bottom: clamp(24px, 6vh, 56px); transform: translateX(-50%); display: flex; gap: 18px; white-space: nowrap; font: 500 11px/1 var(--mono); letter-spacing: .2em; color: var(--muted); opacity: 0; transition: opacity .8s 1.6s; }
 .intro.is-in .intro-hint { opacity: 1; }
@@ -97,8 +97,21 @@ html.intro-running { overflow: hidden; }
 
 /* ---------- Esfera de pontos 1-bit no lugar do HUD do topo ---------- */
 .hero-art { filter: none; }
-.orb { position: absolute; inset: -18%; width: 136%; height: 136%; pointer-events: none; }
-.orb-tag { position: absolute; left: 0; top: 0; margin: -15px 0 0 12px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid var(--line); background: #000;
-  font: 400 10px/1 var(--mono); letter-spacing: .1em; color: var(--text); white-space: nowrap; transition: opacity .3s; will-change: transform; }
-.orb-tag i { width: 5px; height: 5px; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.orb { position: absolute; inset: 4%; width: 92%; height: 92%; cursor: grab; touch-action: pan-y;
+  transform: scale(calc(1 - var(--out, 0) * .35)); opacity: calc(1 - var(--out, 0) * 1.2); }
+.orb.is-dragging { cursor: grabbing; }
+.orb-tag { position: absolute; display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid var(--line); background: #000;
+  font: 400 10px/1 var(--mono); letter-spacing: .1em; color: var(--text); white-space: nowrap; pointer-events: none; animation: tag-float 6s ease-in-out infinite; }
+.orb-tag i, .globe-pin i { width: 5px; height: 5px; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.orb-tag--a { left: 0; top: 16%; }
+.orb-tag--b { right: -2%; top: 40%; animation-delay: -2s; }
+.orb-tag--c { left: 8%; bottom: 14%; animation-delay: -4s; }
+@keyframes tag-float { 50% { transform: translateY(-8px); } }
+/* Etiqueta presa ao ponto de Maringá (ancoragem CSS do cobe); some quando o ponto vai para trás do globo. */
+.globe-pin { position: absolute; position-anchor: --cobe-maringa; bottom: anchor(top); left: anchor(center); translate: -50% -10px;
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; background: #000; border: 1px solid var(--accent);
+  font: 500 10px/1 var(--mono); letter-spacing: .12em; color: var(--accent); white-space: nowrap; pointer-events: none;
+  opacity: var(--cobe-visible-maringa, 0); filter: blur(calc((1 - var(--cobe-visible-maringa, 0)) * 6px)); transition: opacity .3s, filter .3s; }
+@supports not (position-anchor: --a) { .globe-pin { display: none; } }
+@media (prefers-reduced-motion: reduce) { .orb-tag { animation: none; } }
 .hero-art .art-coordinate { color: var(--muted); }

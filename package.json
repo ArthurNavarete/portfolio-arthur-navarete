@@ -12,6 +12,7 @@
     "vite": "^8.3.5"
   },
   "dependencies": {
-    "@paper-design/shaders": "0.0.81"
+    "@paper-design/shaders": "0.0.81",
+    "cobe": "2.0.1"
   }
 }

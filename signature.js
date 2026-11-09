@@ -1,8 +1,9 @@
 // Efeitos de assinatura: Limalha (item licenciado do Profitize Build, adaptado à paleta do site), a intro, o título
-// formado por pontos e a esfera de pontos 1-bit (inspirados na landing page Sinal), a frase que acende, o trilho lateral e o nome
+// formado por pontos (inspirados na landing page Sinal), o globo de pontos com Maringá (cobe), a frase que acende, o trilho lateral e o nome
 // do rodapé (inspirados na landing page Akari). O botão Mercúrio fica em metal.js. Tudo é melhoria progressiva.
 import { mountMetalText } from './metal.js';
 import './stars.js';
+import createGlobe from 'cobe';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -147,69 +148,55 @@ function mountLimalha(stage, host) {
 const limalha = document.querySelector('.limalha-stage');
 if (limalha) { try { mountLimalha(limalha, limalha.closest('section')); } catch (err) { console.warn('limalha: ficou o fundo liso', err); } }
 
-/* ========== Esfera de pontos 1-bit no topo (a esfera do Sinal + o globo do centralpi, com marca própria).
-   Pontos numa esfera de Fibonacci, sombreados por pontilhado: o lado iluminado fica denso, o outro some.
-   Gira devagar, inclina com o cursor, carrega as etiquetas e se desfaz em pontos ao rolar para fora do topo. ========== */
-const orbCanvas = document.querySelector('.orb');
-if (orbCanvas) {
-  const art = orbCanvas.parentElement, ctx = orbCanvas.getContext('2d');
-  const tags = [...art.querySelectorAll('.orb-tag')];
-  const N = innerWidth < 1100 ? 1800 : 3200;
-  const pts = [];
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < N; i++) {
-    const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = golden * i;
-    // Faixa verde: uma órbita inclinada de pontos, o único toque de cor da esfera.
-    const ring = Math.abs(y * Math.cos(0.5) - Math.sin(th) * r * Math.sin(0.5)) < 0.035;
-    pts.push({ x: Math.cos(th) * r, y, z: Math.sin(th) * r, t: Math.random(), k: Math.random(), ring });
-  }
-  const anchors = [[-0.62, -0.42, 0.66], [0.78, -0.18, 0.6], [-0.35, 0.72, 0.6]].map(([x, y, z]) => { const l = Math.hypot(x, y, z); return { x: x / l, y: y / l, z: z / l }; });
-  const L = (() => { const v = [-0.35, -0.45, 0.82], l = Math.hypot(...v); return v.map((c) => c / l); })();
-  let W = 0, H = 0, R = 0, cx = 0, cy = 0, visible = true, tx = 0, ty = 0, px = 0, py = 0, burst = 0;
-  const size = () => {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    W = orbCanvas.clientWidth; H = orbCanvas.clientHeight;
-    orbCanvas.width = W * dpr; orbCanvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    R = art.clientWidth * 0.34; cx = W / 2; cy = H / 2;
-  };
-  const project = (p, a, b, e, spread) => {
-    const x1 = p.x * Math.cos(a) + p.z * Math.sin(a), z1 = -p.x * Math.sin(a) + p.z * Math.cos(a);
-    const y2 = p.y * Math.cos(b) - z1 * Math.sin(b), z2 = p.y * Math.sin(b) + z1 * Math.cos(b);
-    const f = 3.2, s = f / (f - z2), grow = 1 + e * spread;
-    return { X: cx + x1 * R * s * grow, Y: cy + y2 * R * s * grow, z: z2, nx: x1, ny: y2 };
-  };
-  const draw = (now) => {
-    const a = now * 0.00011 + px * 0.5, b = 0.32 + py * 0.3;
-    const top = art.getBoundingClientRect().top;
-    burst += (Math.min(1, Math.max(0, -top / (art.clientHeight * 0.9))) - burst) * 0.12;
-    ctx.clearRect(0, 0, W, H);
-    for (const p of pts) {
-      const q = project(p, a, b, burst, 0.5 + p.k * 1.8);
-      const shade = Math.max(0, q.nx * L[0] + q.ny * L[1] + q.z * L[2]);
-      const front = q.z > 0;
-      let alpha;
-      if (p.ring) alpha = front ? 1 : 0.3;
-      else if (shade * 1.25 + 0.05 > p.t) alpha = front ? 0.95 : 0.35;
-      else if (p.t < 0.2) alpha = front ? 0.32 : 0.14; // silhueta do lado escuro
-      else continue;
-      alpha *= 1 - burst * 0.85;
-      ctx.fillStyle = p.ring ? `rgba(214,243,106,${alpha})` : `rgba(255,255,255,${alpha})`;
-      const s = front ? 2 : 1.5;
-      ctx.fillRect(Math.round(q.X), Math.round(q.Y), s, s);
-    }
-    tags.forEach((tag, i) => {
-      const q = project(anchors[i], a, b, burst, 1.2);
-      tag.style.transform = `translate(${(q.X - W / 2 + art.clientWidth / 2).toFixed(1)}px, ${(q.Y - H / 2 + art.clientHeight / 2).toFixed(1)}px)`;
-      tag.style.opacity = String(Math.max(0, (q.z > -0.05 ? 1 : 0.18) * (1 - burst * 1.4)));
+/* ========== Globo de pontos no topo (biblioteca cobe, MIT): continentes em pontos brancos no preto, Maringá
+   marcado em verde com etiqueta presa ao ponto. Balança em torno do Brasil, pode ser arrastado (segue no embalo e
+   depois volta para Maringá) e encolhe e some quando o topo sai da tela. ========== */
+const globeCanvas = document.querySelector('.orb');
+if (globeCanvas) {
+  const art = globeCanvas.parentElement;
+  const MARINGA = [-23.4205, -51.9333];
+  const toPhi = (lon) => Math.PI - ((lon * Math.PI) / 180 - Math.PI / 2);
+  let phi = toPhi(MARINGA[1]), vel = 0, drag = null, visible = true, globe = null;
+  const theta = -0.32; // inclina para mostrar o hemisfério sul
+  const start = () => {
+    const size = globeCanvas.clientWidth, dpr = Math.min(devicePixelRatio || 1, 2);
+    globe?.destroy();
+    globe = createGlobe(globeCanvas, {
+      devicePixelRatio: dpr, width: size * dpr, height: size * dpr,
+      phi, theta, dark: 1, diffuse: 2.2, mapSamples: innerWidth < 1100 ? 12000 : 20000, mapBrightness: 12,
+      baseColor: [0.7, 0.7, 0.7], markerColor: [0.84, 0.95, 0.42], glowColor: [0.2, 0.22, 0.14],
+      markers: [{ location: MARINGA, size: 0.07, id: 'maringa' }], markerElevation: 0.02,
     });
   };
-  size(); addEventListener('resize', size);
-  if (reduced) draw(0);
-  else {
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(art);
-    art.closest('.hero').addEventListener('pointermove', (e) => { tx = e.clientX / innerWidth - 0.5; ty = e.clientY / innerHeight - 0.5; }, { passive: true });
-    const loop = (now) => { if (visible && !document.hidden) { px += (tx - px) * 0.05; py += (ty - py) * 0.05; draw(now); } requestAnimationFrame(loop); };
+  start();
+  // A cobe 2 não tem laço próprio: cada quadro chama update() (só com o topo visível e a aba ativa).
+  const loop = () => {
+    if (visible && !document.hidden && globe) {
+      if (!drag && !reduced) {
+        // Balança devagar em torno do Brasil; depois de um arrasto, o embalo gasta e ele volta para Maringá.
+        const t = performance.now() / 1000, home = toPhi(MARINGA[1]) + Math.sin(t * 0.25) * 0.55;
+        const nearest = home + Math.round((phi - home) / (Math.PI * 2)) * Math.PI * 2;
+        phi += vel + (Math.abs(vel) < 0.002 ? (nearest - phi) * 0.012 : 0); vel *= 0.95;
+      }
+      globe.update({ phi, theta });
+    }
     requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  addEventListener('resize', () => { clearTimeout(start.t); start.t = setTimeout(start, 200); });
+  // Arrastar para girar; ao soltar, a velocidade do gesto vira embalo.
+  globeCanvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, phi, last: e.clientX }; globeCanvas.setPointerCapture(e.pointerId); globeCanvas.classList.add('is-dragging'); });
+  globeCanvas.addEventListener('pointermove', (e) => { if (!drag) return; phi = drag.phi + (e.clientX - drag.x) / 180; vel = (e.clientX - drag.last) / 900; drag.last = e.clientX; });
+  const release = () => { drag = null; globeCanvas.classList.remove('is-dragging'); };
+  globeCanvas.addEventListener('pointerup', release); globeCanvas.addEventListener('pointercancel', release);
+  // Some com a rolagem: escala e opacidade guiadas pela posição do topo.
+  if (!reduced) {
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(art);
+    addEventListener('scroll', () => {
+      if (!visible) return;
+      const k = Math.min(1, Math.max(0, -art.getBoundingClientRect().top / (art.clientHeight * 0.9)));
+      art.style.setProperty('--out', k.toFixed(3));
+    }, { passive: true });
   }
 }
 
@@ -457,7 +444,19 @@ function sparkBurst(canvas, y, x0, x1) {
       sparkBurst(intro.querySelector('.intro-sparks'), lineY, lr.left + lr.width * 0.08, lr.right - lr.width * 0.08);
     }, 400);
     setTimeout(() => { intro.classList.add('is-open'); root.classList.remove('intro-running'); root.classList.add('title-forming'); }, 720);
-    setTimeout(() => intro.classList.add('is-leaving'), 900);
+    // No fim, o "navarete" da intro voa até a marca do topo e encolhe para o tamanho dela.
+    // Medido quando o metal já pousou (sem a animação de impacto, que mexe na escala).
+    setTimeout(() => {
+      const brand = document.querySelector('.brand-metal')?.getBoundingClientRect();
+      if (brand?.width) {
+        metal.style.animation = 'none';
+        const m = metal.getBoundingClientRect(), sc = brand.width / (m.width * 0.82);
+        intro.style.setProperty('--to-x', `${(brand.left + brand.width / 2 - (m.left + m.width / 2)).toFixed(1)}px`);
+        intro.style.setProperty('--to-y', `${(brand.top + brand.height / 2 - (m.top + m.height / 2)).toFixed(1)}px`);
+        intro.style.setProperty('--to-s', sc.toFixed(3));
+      }
+      intro.classList.add('is-leaving');
+    }, 900);
     setTimeout(() => startTitle(innerWidth / 2, lineY), 1450);
     setTimeout(() => { state = 'done'; end(); }, 2600);
   };

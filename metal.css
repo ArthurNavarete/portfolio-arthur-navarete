@@ -43,3 +43,11 @@
 @media (max-width: 760px) { .hero-actions .metal-btn, .hero-actions .button { height: 52px; min-height: 52px; } .hero-actions .metal-btn { justify-content: space-between; } }
 /* Seta para baixo ("Ver as telas"): o mesmo orbe, girado */
 .metal-btn--down .metal-btn__orb { transform: rotate(90deg); }
+/* Marca do topo: "navarete" em metal líquido animado (o mesmo da intro). Sem WebGL, fica o prateado em CSS. */
+.brand-metal { position: relative; display: block; width: 156px; height: 44px; }
+.brand-metal b { position: absolute; inset: 0; display: grid; place-items: center start; font: 800 31px/1 var(--sans); letter-spacing: -.055em;
+  background: linear-gradient(180deg, #fff 0%, #9a9a9a 48%, #f4f4f4 60%, #6b6b6b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; transition: opacity .3s; }
+.brand-metal > canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .3s; filter: brightness(1.55) contrast(.92); }
+.brand-metal.is-ready > canvas { opacity: 1; }
+.brand-metal.is-ready b { opacity: 0; }
+@media (max-width: 760px) { .brand-metal { width: 128px; height: 38px; } .brand-metal b { font-size: 26px; } }
