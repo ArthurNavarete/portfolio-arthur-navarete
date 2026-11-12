@@ -95,3 +95,9 @@ html:not(.js) .case-grow-media { clip-path: none; aspect-ratio: 16 / 10; height:
 .next-case small { font: 500 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .next-case strong { font-size: clamp(40px, 7vw, 104px); line-height: 0.9; letter-spacing: -0.06em; transition: color 0.3s; }
 .next-case a:hover strong { color: var(--accent); }
+
+/* Sem aspect-ratio (Safari < 15, Chrome < 88): altura pelo padding, imagem por cima. */
+@supports not (aspect-ratio: 1 / 1) {
+  .case-grow-media { height: 0 !important; padding-top: 62.5%; position: relative; }
+  .case-grow-media img { position: absolute; inset: 0; }
+}

@@ -152,7 +152,7 @@ if (limalha) { try { mountLimalha(limalha, limalha.closest('section')); } catch 
    marcado em verde com etiqueta presa ao ponto. Balança em torno do Brasil, pode ser arrastado (segue no embalo e
    depois volta para Maringá) e encolhe e some quando o topo sai da tela. ========== */
 const globeCanvas = document.querySelector('.orb');
-if (globeCanvas) {
+if (globeCanvas) (() => {
   const art = globeCanvas.parentElement;
   const MARINGA = [-23.4205, -51.9333];
   const toPhi = (lon) => Math.PI - ((lon * Math.PI) / 180 - Math.PI / 2);
@@ -168,7 +168,20 @@ if (globeCanvas) {
       markers: [{ location: MARINGA, size: 0.07, id: 'maringa' }], markerElevation: 0.02,
     });
   };
-  start();
+  // Sem WebGL (GPU antiga, driver bloqueado): fica a foto do globo (CSS .no-webgl) e nada roda.
+  const hasGL = (() => { try { return !!document.createElement('canvas').getContext('webgl'); } catch { return false; } })();
+  if (!hasGL) { art.classList.add('no-webgl'); return; }
+  try { start(); } catch { art.classList.add('no-webgl'); return; }
+  // A etiqueta copia a posição do marcador invisível que a cobe põe no lugar de Maringá (igual em todo navegador).
+  const pin = art.querySelector('.globe-pin');
+  const followPin = () => {
+    if (!pin) return;
+    // O marcador é a caixinha de 1 px que a cobe põe ao lado do canvas (o Firefox descarta o anchor-name do estilo).
+    const mark = [...globeCanvas.parentElement.children].find((n) => n.tagName === 'DIV' && n.offsetWidth === 1);
+    if (!mark) return;
+    const m = mark.getBoundingClientRect(), r = art.getBoundingClientRect();
+    pin.style.left = `${m.left - r.left}px`; pin.style.top = `${m.top - r.top}px`;
+  };
   // A cobe 2 não tem laço próprio: cada quadro chama update() (só com o topo visível e a aba ativa).
   const loop = () => {
     if (visible && !document.hidden && globe) {
@@ -179,6 +192,7 @@ if (globeCanvas) {
         phi += vel + (Math.abs(vel) < 0.002 ? (nearest - phi) * 0.012 : 0); vel *= 0.95;
       }
       globe.update({ phi, theta });
+      followPin();
     }
     requestAnimationFrame(loop);
   };
@@ -198,7 +212,7 @@ if (globeCanvas) {
       art.style.setProperty('--out', k.toFixed(3));
     }, { passive: true });
   }
-}
+})();
 
 /* ========== Sinal + Akari: nome gigante do rodapé, montado por pontos que chovem ========== */
 const footWord = document.querySelector('.foot-word');

@@ -11,8 +11,13 @@ const pages = {
   privacidade: 'privacidade/index.html',
 };
 
+// Alvo amplo: navegadores de 2020 em diante (Chrome/Edge 87, Firefox 78, Safari 14), comuns em computadores antigos.
+const legacy = ['es2020', 'chrome87', 'edge88', 'firefox78', 'safari14'];
+
 export default defineConfig({
   build: {
+    target: legacy,
+    cssTarget: legacy,
     rollupOptions: {
       input: Object.fromEntries(Object.entries(pages).map(([name, file]) => [name, resolve(import.meta.dirname, file)])),
     },
